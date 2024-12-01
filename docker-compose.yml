@@ -1,0 +1,44 @@
+version: '3.3'
+
+services:
+  arete-backend-service:
+    image: backend:latest
+    tty: true
+    ports:
+      - "5003:5003"
+    environment:
+      - API_PORT=5003
+      - MONGO_URI=uri-stored-on-instance
+      - TEMP_URI=uri-stored-on-instance
+      - TOKEN_KEY=token
+      - TIMEZONE=Asia/Kolkata
+      - HOST=smtp.gmail.com
+      - USER=hussain@gmail.com
+      - PASS=PROEVOLUTION
+      - BASE_URL="http://localhost:5003/backend"
+      - clientid=id
+      - clientsecret=secret
+      - client_id=id
+      - client_secret=secret
+      - appBaseUrl=http://localhost:5003
+      - scope=openid profile
+      - okta_port=5003
+      - loginCallback=/new_redirect/for_sign_in
+    restart: always
+    networks:
+      - arete_network
+
+  arete-frontend-service:
+    tty: true
+    image: frontend:latest
+    ports:
+      - '3000:80'
+    environment:
+      - REACT_APP_IS_DEFAULT_ORG=true
+      - REACT_APP_DEFAULT_ORG_ID=launch_demo
+    restart: always
+    networks:
+      - arete_network
+
+networks:
+  arete_network:
